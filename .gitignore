@@ -1,1 +1,11 @@
+# Ignore data and logs
+github_api_project/data/
+github_api_project/logs/
 
+# Python junk
+__pycache__/
+*.pyc
+.env
+
+# OS files
+.DS_Store
