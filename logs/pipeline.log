@@ -1,0 +1,12 @@
+2026-02-04 13:14:02,424 | INFO | __main__ | Pipeline Started
+2026-02-04 13:14:02,425 | INFO | __main__ | Fetching repo
+2026-02-04 13:14:03,519 | INFO | __main__ | Fetching commits
+2026-02-04 13:14:05,181 | INFO | extract.github_client | Fetched page 1, commits so far: 100
+2026-02-04 13:14:06,283 | INFO | extract.github_client | Fetched page 2, commits so far: 121
+2026-02-04 13:14:07,272 | INFO | __main__ | Raw commits completed.
+2026-02-04 13:14:07,326 | INFO | __main__ | Silver commits completed
+2026-02-04 13:14:07,327 | INFO | __main__ | Building dim_repo table
+2026-02-04 13:14:07,358 | INFO | __main__ | Building dim_author table
+2026-02-04 13:14:07,376 | INFO | __main__ | Building dim_date table
+2026-02-04 13:14:07,413 | INFO | __main__ | Building fact_commits table
+2026-02-04 13:14:07,483 | INFO | __main__ | Pipeline completed successfully
