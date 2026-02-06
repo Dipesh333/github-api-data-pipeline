@@ -2,6 +2,7 @@ import os
 import requests
 import logging
 from datetime import datetime, timedelta, timezone
+from state.state_manager import get_last_commit_ts
 
 BASE_URL = "https://api.github.com"
 
@@ -30,25 +31,33 @@ def fetch_commits(owner: str, repo: str, per_page: int = 100,lookback_days: int 
         commits = []
         page = 1
 
-        since_ts=(datetime.now(timezone.utc)-timedelta(days=lookback_days)).isoformat() 
+        since_ts = get_last_commit_ts()  # None on first run
 
         while True:
             url = f"{BASE_URL}/repos/{owner}/{repo}/commits"
-            params = {"per_page": per_page, "page": page,"since": since_ts}
+            params = {"per_page": per_page, "page": page}
+            if since_ts:
+                params["since"] = since_ts
 
             response = requests.get(url, headers=_get_headers(), params=params)
             response.raise_for_status()
 
             batch = response.json()
-            if not batch:   
+            if not batch:
                 break
 
             commits.extend(batch)
-            
-            logger.info("Fetched page %s, commits so far: %s",page,len(commits))
             page += 1
-            
-        return commits
+
+        # compute new high-watermark
+        latest_ts = None
+        if commits:
+            latest_ts = max(
+                c["commit"]["committer"]["date"] for c in commits
+            )
+
+        return commits, latest_ts
+    
     except Exception as e:
         logger.exception("Failed to fetch commits")
         raise
